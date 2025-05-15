@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Maitree:wght@200;300;400;500;600;700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    margin-block-end: 0;
+    margin-block-start: 0;
+}
+
+body {
+    font-family: "Inter", system-ui, sans-serif;
+    color: #5e5e5e;
+    background-image: url("./assets/pattern.png");
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+main {
+    margin-top: 3rem;
+}
+
+form {
+    border-radius: 3px;
+    position: relative;
+}
+
+input {
+    border: none;
+    border-bottom: .5px solid;
+    height: 25px;
+    font-weight: 300;
+    background-color: transparent;
+    width: 100%;
+}
+
+input:focus {
+    outline: none;
+}
+
+input::placeholder {
+    color: #999999c9;
+}
+
+fieldset {
+    margin-inline: 0;
+    border-width: 0;
+    border-style: none;
+    border-color: none;
+    padding-block: 0;
+    padding-inline: 0;
+}
+
+legend {
+    font-size: 2rem;
+    font-weight: 200;
+    margin-bottom: 3rem;
+    width: 100%;
+    padding: 1rem 0 1rem .5rem;
+    border-left: 3px solid rgb(92 0 252);
+    letter-spacing: 2px;
+    position: relative;
+}
+
+legend > span {
+    font-weight: 800;
+    font-size: 64px;
+    color: #99999933;
+    transform: scale(1.5);
+    position: absolute;
+    top: 1rem;
+    right: 50px;
+    transform: scale(3.5)
+}
+
+label {
+    font-size: .9rem;
+    color:  #1e1e1e;
+    font-weight: 500;
+}
+
+label, input {
+    font-family: "Anuphan";
+}
+
+button, a {
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
+
+#root {
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    width: 100%;
+    padding: 2rem 1.2rem;
+}
+
+.next-step__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .7rem;
+    width: 100%;
+    margin-top: 2rem;
+    padding: 10px;
+    border-radius: 3px;
+    background-color: rgb(92 0 252);
+    color: #fff;
+    font-weight: 900;
+    font-family: "Anuphan";
+}
+
+.arrow {
+    transition: transform linear .3s;
+}
+
+.next-step__btn:hover > .arrow {
+    transform: translateX(5px);
+}
+

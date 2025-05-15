@@ -1,0 +1,23 @@
+
+
+.gradient-header {
+    color: transparent;
+    background: linear-gradient(90deg, rgb(92 0 252), rgb(194, 11, 60)) text;
+    font-size: 4rem;
+    font-weight: 700;
+    font-style: normal;
+    width: max-content;
+}
+
+header > span {
+    font-family: "Anuphan";
+    letter-spacing: 1.3px;
+    font-weight: 300;
+    line-height: 3;
+    width: 100%;
+    display: block;
+    text-align: right;
+    color: #473c4ae6;
+    font-style: italic;
+    
+}
