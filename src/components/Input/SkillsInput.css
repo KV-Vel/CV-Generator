@@ -1,0 +1,48 @@
+.skills {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.skills > .skills__input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    gap: .8rem;
+}
+
+.skills-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.skill {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    border: 1px solid #6701e7;
+    font-family: "Inter";
+    letter-spacing: 2.8px;
+    padding: 10px;
+    text-transform: uppercase;
+    color: rgb(40 10 146 / 73%);
+}
+
+.skill > span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.add-skills-btn {
+    background-color: rgba(92, 0, 252, 0.924);
+    color: #fff;
+    font-family: "Inter";
+    letter-spacing: 2.8px;
+    padding: 10px;
+    text-transform: uppercase;
+    text-align: center;
+}
