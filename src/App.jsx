@@ -1,124 +1,217 @@
-import { createContext, useState } from "react";
+import { useState, useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 
-// CSS
-import "../src/index.css";
+// CONSTANTS
+import { SECTION_TYPES } from "./constants/sections";
+import { LABELS } from "./constants/labels";
 
-// REACT ICONS
-import { LuView } from "react-icons/lu";
-import { CiEraser } from "react-icons/ci";
-import { VscFilePdf, VscGitPullRequestGoToChanges } from "react-icons/vsc";
-import { IconContext } from "react-icons";
+// DATA
+import { structure } from "./data/structure";
+import { prefilledInputs } from "./data/preffiledInputs";
 
 // COMPONENTS
 import Header from "./components/UI/Header/Header";
 import Section from "./components/Section/Section";
 import AddendumSection from "./components/Section/AddendumSection";
+import CV from "./components/CV/CV";
+import Aside from "./components/UI/Aside/Aside";
+import LinkGroup from "./components/UI/Links/LinkGroup";
 
-// DATA
-import dataHandler from "./data/initialData";
-
-export const AppDataContext = createContext();
+// CSS
+import "../src/index.css";
 
 function App() {
     const [appData, setAppData] = useState({
-        general: [dataHandler.getData("general")],
-        education: [dataHandler.getData("education")],
-        work: [dataHandler.getData("work")],
-        skills: [dataHandler.getData("skills")],
+        [SECTION_TYPES.GENERAL]: [structure[SECTION_TYPES.GENERAL]],
+        [SECTION_TYPES.EDUCATION]: [structure[SECTION_TYPES.EDUCATION]],
+        [SECTION_TYPES.WORK]: [structure[SECTION_TYPES.WORK]],
+        [SECTION_TYPES.ADDENDUM]: [],
     });
+
+    const [isCvVisible, setIsCvVisible] = useState(false);
+
+    const contentRef = useRef();
+    const print = useReactToPrint({ contentRef });
 
     function prefillCV() {
         setAppData({
-            general: [dataHandler.getData("general", true)],
-            education: [dataHandler.getData("education", true)],
-            work: [dataHandler.getData("work", true)],
-            skills: [dataHandler.getData("skills", true)],
+            [SECTION_TYPES.GENERAL]: [
+                {
+                    subsection: SECTION_TYPES.GENERAL,
+                    id: crypto.randomUUID(),
+                    isSubmitted: true,
+                    inputs: prefilledInputs[SECTION_TYPES.GENERAL],
+                },
+            ],
+            [SECTION_TYPES.EDUCATION]: [
+                {
+                    subsection: SECTION_TYPES.EDUCATION,
+                    id: crypto.randomUUID(),
+                    isSubmitted: true,
+                    inputs: prefilledInputs[SECTION_TYPES.EDUCATION],
+                },
+            ],
+            [SECTION_TYPES.WORK]: [
+                {
+                    subsection: SECTION_TYPES.WORK,
+                    id: crypto.randomUUID(),
+                    isSubmitted: true,
+                    inputs: prefilledInputs[SECTION_TYPES.WORK],
+                },
+            ],
+            [SECTION_TYPES.ADDENDUM]: [
+                {
+                    subsection: "Skills",
+                    id: crypto.randomUUID(),
+                    isSubmitted: true,
+                    inputs: prefilledInputs[SECTION_TYPES.ADDENDUM],
+                },
+            ],
         });
     }
 
     function clearCv() {
         setAppData({
-            general: [...appData.general],
-            education: [],
-            work: [],
-            skills: [{ ...appData.skills, inputs: [] }],
+            [SECTION_TYPES.GENERAL]: [structure[SECTION_TYPES.GENERAL]],
+            [SECTION_TYPES.EDUCATION]: [],
+            [SECTION_TYPES.WORK]: [],
+            [SECTION_TYPES.ADDENDUM]: [],
         });
     }
 
+    function toggleCV(event) {
+        const clickedOutside = event.target === event.currentTarget;
+
+        if (clickedOutside) {
+            setIsCvVisible(!isCvVisible);
+        }
+    }
+
     function handleAddSection(sectionName) {
-        setAppData(prevAppData => {
+        const defaultInputs = LABELS[sectionName].map((label) => ({
+            name: label,
+            id: crypto.randomUUID(),
+            value: "",
+        }));
+
+        setAppData((prevAppData) => ({
+            ...prevAppData,
+            [sectionName]: [
+                ...prevAppData[sectionName],
+                { subsection: sectionName, id: crypto.randomUUID(), inputs: defaultInputs, isSubmitted: false },
+            ],
+        }));
+    }
+
+    function handleDeleteSection(sectionName, id) {
+        setAppData((prevAppData) => {
+            const filtered = prevAppData[sectionName].filter((toDeleteObj) => toDeleteObj.id !== id);
+
             return {
                 ...prevAppData,
-                [sectionName]: [...prevAppData[sectionName], dataHandler.getData(sectionName)],
+                [sectionName]: filtered,
             };
         });
     }
-    // Using carrying (to learn), but making callback and pass it further would be more practical
-    function handleDeleteSection(sectionName) {
-        return id => {
-            setAppData(prevAppData => {
-                const filtered = prevAppData[sectionName].filter(toDeleteObj => toDeleteObj.id !== id);
+
+    function handleSubmit(event, sectionName, id, data) {
+        event.preventDefault();
+
+        setAppData((prevAppData) => {
+            const toReplace = prevAppData[sectionName].map((section) => {
+                if (section.id !== id) return section;
+
                 return {
-                    ...prevAppData,
-                    [sectionName]: filtered,
+                    ...section,
+                    isSubmitted: true,
+                    inputs: data,
                 };
             });
-        };
+
+            return {
+                ...prevAppData,
+                [sectionName]: toReplace,
+            };
+        });
+    }
+
+    function handleAddendumChange(id, updatedName, updatedContent) {
+        setAppData((prevAppData) => {
+            const updatedData = prevAppData[SECTION_TYPES.ADDENDUM].map((obj) => {
+                if (obj.id !== id) return obj;
+
+                return {
+                    ...obj,
+                    inputs: [{ value: updatedContent }],
+                    isSubmitted: true,
+                    subsection: updatedName,
+                };
+            });
+
+            return {
+                ...prevAppData,
+                [SECTION_TYPES.ADDENDUM]: updatedData,
+            };
+        });
     }
 
     return (
         <>
-            <Header />
-            <main>
-                <IconContext.Provider value={{ color: "#fff", size: "1.5em", display: "inline-block" }}>
-                    <aside>
-                        <button type="button" aria-label="View">
-                            <LuView />
-                            <span>View</span>
-                        </button>
-                        <button type="button" aria-label="Clear CV" onClick={clearCv}>
-                            <CiEraser />
-                            <span>Clear</span>
-                        </button>
-                        <button type="button" aria-label="Autofill CV" onClick={prefillCV}>
-                            <VscGitPullRequestGoToChanges />
-                            <span>Prefill</span>
-                        </button>
-                        {/*Кнопка должна не рендериться если окно === tablet или монитор*/}
-                        <button type="button" aria-label="PDF">
-                            <VscFilePdf />
-                            <span>PDF</span>
-                        </button>
-                    </aside>
-                </IconContext.Provider>
-                <Section
-                    name="General Information"
-                    step={1}
-                    initialData={appData.general}
-                    onAddSection={() => handleAddSection("general")}
-                    onDelete={handleDeleteSection("general")}
+            <div className="app-wrapper" aria-hidden={isCvVisible}>
+                <div className="main-wrapper">
+                    <Header />
+                    <main>
+                        <Aside
+                            handleClear={clearCv}
+                            handlePrefill={prefillCV}
+                            handleView={toggleCV}
+                            handlePrint={() => print()}
+                        />
+                        <Section
+                            name={SECTION_TYPES.GENERAL}
+                            step={1}
+                            data={appData[SECTION_TYPES.GENERAL]}
+                            onAddSection={handleAddSection}
+                            onDelete={handleDeleteSection}
+                            onSubmit={handleSubmit}
+                        />
+                        <Section
+                            name={SECTION_TYPES.EDUCATION}
+                            step={2}
+                            data={appData[SECTION_TYPES.EDUCATION]}
+                            onAddSection={handleAddSection}
+                            onDelete={handleDeleteSection}
+                            onSubmit={handleSubmit}
+                        />
+                        <Section
+                            name={SECTION_TYPES.WORK}
+                            step={3}
+                            data={appData[SECTION_TYPES.WORK]}
+                            onAddSection={handleAddSection}
+                            onDelete={handleDeleteSection}
+                            onSubmit={handleSubmit}
+                        />
+                        <AddendumSection
+                            name="Addendum"
+                            step={4}
+                            data={appData[SECTION_TYPES.ADDENDUM]}
+                            onAddSection={handleAddSection}
+                            onDelete={handleDeleteSection}
+                            onChangeName={handleAddendumChange}
+                        />
+                    </main>
+                    <LinkGroup />
+                </div>
+                <CV
+                    general={appData[SECTION_TYPES.GENERAL]}
+                    education={appData[SECTION_TYPES.EDUCATION]}
+                    work={appData[SECTION_TYPES.WORK]}
+                    addendums={appData[SECTION_TYPES.ADDENDUM]}
+                    printingRef={contentRef}
+                    isVisible={isCvVisible}
+                    onOutsideClick={toggleCV}
                 />
-                <Section
-                    name="Educational Experience"
-                    step={2}
-                    initialData={appData.education}
-                    onAddSection={() => handleAddSection("education")}
-                    onDelete={handleDeleteSection("education")}
-                />
-                <Section
-                    name="Work Experience"
-                    step={3}
-                    initialData={appData.work}
-                    onAddSection={() => handleAddSection("work")}
-                    onDelete={handleDeleteSection("work")}
-                />
-                <AppDataContext.Provider value={{ appData, setAppData }}>
-                    <AddendumSection
-                        name="Addendum"
-                        step={4}
-                    />
-                </AppDataContext.Provider>
-            </main>
+            </div>
         </>
     );
 }
