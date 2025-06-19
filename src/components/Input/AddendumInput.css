@@ -1,0 +1,12 @@
+.addendum {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.addendum > .addendum__input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    gap: .8rem;
+}
