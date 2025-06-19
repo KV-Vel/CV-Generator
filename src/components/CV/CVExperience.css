@@ -1,0 +1,37 @@
+.cv-text__other-experience > h4,
+.cv-text__other-work {
+    border-bottom: 2px solid rgb(var(--purple-main));
+    margin-block-end: 1rem;
+}
+
+.part {
+    display: grid;
+    grid-template-columns: .5fr 1fr;
+}
+
+.part :where(.part-left, .part-right) {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    padding-inline-end: 1rem;
+    position: relative;
+}
+
+.part-right > p {
+    padding-block-end: 1rem;
+}
+
+.part-right {
+    position: relative;
+    padding-inline-start: 1rem;
+}
+
+.part-right::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transform: scaleY(0.9);
+    border-right: 1px solid rgb(var(--purple-main));
+}

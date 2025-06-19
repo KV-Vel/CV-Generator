@@ -1,0 +1,23 @@
+.cv-aside__content__addendum {
+    display: grid;
+    grid-template-columns: minmax(100px, 2fr) 8fr;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cv-aside__content__addendum > h4 {
+    border-bottom: 2px solid rgb(var(--purple-main));
+}
+
+.cv-aside__content__addendum > h5 {
+    background-color: rgb(var(--purple-darker));
+    color: #fff;
+    padding: 5px 10px;
+    text-align: center;
+}
+
+.addendum-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
