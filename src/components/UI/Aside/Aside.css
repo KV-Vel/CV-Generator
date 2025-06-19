@@ -1,0 +1,55 @@
+aside {
+    display: flex;
+    justify-content: center;
+    gap: .5rem;
+    position: sticky;
+    /*Fix for blurry react icons*/
+    top: 1%;
+    z-index: 1;
+}
+
+aside > button {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    transition: 300ms ease-in;
+    line-height: 50px;
+    font-family: "Inter";
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    overflow: hidden;
+    text-align: left;
+    background-color: rgba(var(--purple-main), 0.924);
+    color: #fff;
+    box-shadow: 10px 10px 2px 0px #00000042;
+    
+}
+
+aside > button > svg {
+    transition: 300ms ease-in;
+    margin-inline-start: 10px;
+    pointer-events: none;
+}
+
+aside > button > span {
+    display: inline-block;
+    margin-inline-start: 10px;
+    vertical-align: super;
+    line-height: 20px;
+    font-size: .7rem;
+    pointer-events: none;
+}
+
+aside > button:hover {
+    width: 100px;
+}
+
+.view-btn {
+    display: none;
+}
+
+@media (max-width: 970px) {
+    .view-btn {
+        display: block;
+    }
+}

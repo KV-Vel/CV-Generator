@@ -1,0 +1,27 @@
+
+.add-section-btn {
+    position: relative;
+    border: 1px solid rgb(var(--purple-darker));
+    color: rgb(40 10 146 / 73%);
+}
+
+.add-section-btn > .add-icon-wrapper {
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    left: calc(100% - 55px);
+    background-color: rgb(var(--purple-darker));
+    color: white;
+    clip-path: polygon(36% 0, 100% 0, 100% 100%, 0 100%);
+    transition: transform 300ms ease;
+}
+
+.add-section-btn > span {
+    display: inline-block;
+    width: 100%;
+    padding-inline-end: 32px;
+}
+
+.add-section-btn:hover > .add-icon-wrapper {
+    transform: scale(1.15);
+}
