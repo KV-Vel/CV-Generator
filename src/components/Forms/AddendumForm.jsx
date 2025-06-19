@@ -1,19 +1,17 @@
-// CSS
+import AddendumInput from "../Input/AddendumInput";
 import "./Form.css";
-// COMPONENTS
-import SkillsInput from "../Input/SkillsInput";
 
-export default function AddendumForm({ subsectionName, index }) {
+export default function AddendumForm({ data, onDelete, onNameChange }) {
     return (
-        <form>
+        <form onSubmit={(event) => event.preventDefault()}>
             <fieldset>
-                <legend>
-                    {subsectionName} <span>{index}</span>
-                </legend>
-                <SkillsInput />
+                <legend>{data.subsection}</legend>
+                <AddendumInput data={data} editName={onNameChange} />
             </fieldset>
             <div className="button-group">
-                <button className="submit-btn">Submit</button>
+                <button type="button" className="delete-btn" onClick={() => onDelete("Addendum", data.id)}>
+                    <span>Delete</span>
+                </button>
             </div>
         </form>
     );
